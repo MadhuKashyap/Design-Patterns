@@ -1,0 +1,1036 @@
+				**DESIGN PATTERNS**
+        
+design patterns are programming language independent strategies for solving the common object-oriented design problems.
+
+A design pattern provides a general reusable solution for the common problems that occur in software design. 
+
+Creational Patterns for the creation of objects; Structural Patterns to provide relationship between objects; and finally, Behavioral Patterns to help define how objects interact.
+
+The idea is to speed up the development process by providing well-tested, proven development/design paradigms.
+By using design patterns, you can make your code more flexible, reusable, and maintainable.
+
+					CREATIONAL
+These design patterns are all about class instantiation or object creation.These design patterns are used when a decision must be made at the time of instantiation of a class
+
+StudentRecord s1=new StudentRecord();  
+
+Here, we are creating the instance by using the new keyword. Sometimes, the nature of the object must be changed according to the nature of the program. In such cases, we must get the help of creational design patterns
+
+Factory Method Pattern
+A Factory Pattern or Factory Method Pattern says that just define an interface or abstract class for creating an object but let the subclasses decide which class to instantiate.
+Advantages  1.Factory Method Pattern allows the sub-classes to choose the type of objects to create.
+2. It promotes the loose-coupling. That means we don’t need to be dependant solely on the interface or abstract class we can choose one of the implementing classes
+Consider we want to implement a notification service through email, SMS, and push notification.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+In the above class diagram we have an interface called Notification, and three concrete classes are implementing Notification interface. A factory class NotificationFactory is created to get a Notification object.
+
+public interface Notification {
+    void notifyUser();
+}
+
+public class SMSNotification implements Notification {
+ 
+    @Override
+    public void notifyUser()
+    {
+        // TODO Auto-generated method stub
+        System.out.println("Sending an SMS notification");
+    }
+}
+
+
+public class EmailNotification implements Notification {
+ 
+    @Override
+    public void notifyUser()
+    {
+        // TODO Auto-generated method stub
+        System.out.println("Sending an e-mail notification");
+    }
+}
+
+
+public class PushNotification implements Notification {
+ 
+    @Override
+    public void notifyUser()
+    {
+        // TODO Auto-generated method stub
+        System.out.println("Sending a push notification");
+    }
+}
+
+
+public class NotificationFactory {
+    public Notification createNotification(String channel)
+    {
+        if (channel == null || channel.isEmpty())
+            return null;
+        switch (channel) {
+        case "SMS":
+            return new SMSNotification();
+        case "EMAIL":
+            return new EmailNotification();
+        case "PUSH":
+            return new PushNotification();
+        default:
+            throw new IllegalArgumentException("Unknown channel "+channel);
+        }
+    }
+}
+
+public class NotificationService {
+    public static void main(String[] args)
+    {
+        NotificationFactory notificationFactory = new NotificationFactory();
+        Notification notification = notificationFactory.createNotification("SMS");
+        notification.notifyUser();
+    }
+}
+
+Abstract Factory Patterns
+
+Abstract Factory Pattern says that just define an interface or abstract class for creating families of related (or dependent) objects but without specifying their concrete sub-classes.
+
+That means Abstract Factory lets a class return a factory of classes.
+
+In factory pattern , we had to choose the type of object we want to create at runtime, Here we choose the class for which we will create a family of objects at run time. 
+In above example we had an interface with 2 or more implementing classes. The implementing interface NotificationFactory, created objects depending on the requirement.  Here we have 2 or more interfaces like Notification and their respective implementing sub-classes, refer below image
+
+Abstract factory pattern implementation provides us with a framework( Client)  that allows us to create objects that follow a general pattern. So at runtime, the abstract factory is coupled with any desired concrete interface/class which can create objects of the desired type.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Let’s take an example, Suppose we want to build a global car factory.
+
+If it was a factory design pattern, then it was suitable for a single location. e.g. India. But for this pattern, we need multiple locations. We need car factories in each location like IndiaCarFactory, USACarFactory, and DefaultCarFactory. And we have different brands of cars for each location.
+
+
+IndiaCarFactory
+|
+|—> micro
+|
+|—>mini
+|
+|—> luxury
+
+
+
+
+
+USACarFactory
+|
+|—> micro
+|
+|—>mini
+|
+|—> luxury
+
+
+
+
+DeafultCarFactory
+|
+|—> micro
+|
+|—>mini
+|
+|—> luxury
+
+
+our application should be smart enough to identify the location where it is being used, so we should be able to use the appropriate car factory without even knowing which car factory implementation will be used internally.Here we need another layer of abstraction that will identify the location and internally use correct car factory implementation
+
+
+enum CarType
+{
+    MICRO, MINI, LUXURY
+}
+ 
+enum Location
+{
+  DEFAULT, USA, INDIA
+}
+
+
+
+
+
+public abstract class Car
+{
+	CarType model;
+	Location loc;
+	Car(){}
+	Car(CarType model, Location loc)
+	{	
+		this.model=model;
+		this.loc = loc;	
+	}
+	abstract void construct();
+	@getters
+	@setters
+}
+	
+Public class IndiaCarFactory extends Car
+{
+	IndiaCarFactory(CarType model)
+	{
+		super(model, Location.INDIA);
+	}
+	void construct()
+	{
+		SOUT(“Constructing car type”+ model+”for location”+loc);	
+	}
+}
+
+Public class USACarFactory extends Car
+{
+	USACarFactory(CarType model)
+	{
+		super(model, Location.USA);
+	}
+	
+	void construct()
+	{
+		SOUT(“Constructing car type”+ model+”for location”+loc);	
+	}
+
+}
+
+Public class DefaultCarFactory extends Car
+{
+	DefaultCarFactory(CarType model)
+	{
+		super(model, Location.DEFAULT);
+	}
+	void construct()
+	{
+		SOUT(“Constructing car type”+ model+”for location”+loc);	
+	}
+
+}
+
+
+Public class CarFactory
+{
+	Location loc = Location.INDIA;  // Application can read geo-location
+	static Car buildCar(CarType model)
+	{
+		Car car = null;
+		switch(loc)
+		{
+			case  INDIA : car = new IndiaCarFactory(model);
+					break;
+			case  USA : car = new IndiaCarFactory(model);
+					break;
+			case  DEFAULT : car = new IndiaCarFactory(model);
+					break;
+		}
+		return car;
+	}
+}
+
+
+public class Main
+{
+	public static void main(String args[])
+	{
+		Car c1= CarFactory.buildCar(CarType.MICRO);
+		Car c2 = CarFactory.buildCar(CarType.MINI);
+		Car c3 = CarFactory.buildCar(CarType.LUXURY);
+	}
+}
+
+
+Advantages: 
+This pattern is particularly useful when the client doesn’t know exactly what type to create. 
+
+
+
+Singleton Design Pattern
+
+
+Sometimes we need to have only one instance of our class for example a single DB connection shared by multiple objects as creating a separate DB connection for every object may be costly.
+
+
+The singleton pattern is a design pattern that restricts the instantiation of a class to one object. 
+
+To create the singleton class, we need to have static member of class, private constructor and static factory method.
+
+Prototype Design Pattern
+
+Prototype patterns are required, when object creation is time consuming, and costly operation, so we create objects with the existing object itself. One of the best available ways to create an object from existing objects is the clone() method.
+
+Prototype Design Participants
+1) Prototype : This is the prototype of an actual object. 2) Prototype registry : This is used as a registry service to have all prototypes accessible using simple string parameters. 3) Client : Client will be responsible for using registry service to access prototype instances.
+
+// A Java program to demonstrate working of
+// Prototype Design Pattern with example
+// of a ColorStore class to store existing objects.
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+abstract class Color implements Cloneable
+{
+	
+	protected String colorName;
+	
+	abstract void addColor();
+	
+	public Object clone()
+	{
+		Object clone = null;
+		try
+		{
+			clone = super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+		}
+		return clone;
+	}
+}
+
+class blueColor extends Color
+{
+	public blueColor()
+	{
+		this.colorName = "blue";
+	}
+
+	@Override
+	void addColor()
+	{
+		System.out.println("Blue color added");
+	}
+	
+}
+
+class blackColor extends Color{
+
+	public blackColor()
+	{
+		this.colorName = "black";
+	}
+
+	@Override
+	void addColor()
+	{
+		System.out.println("Black color added");
+	}
+}
+
+class ColorStore {
+
+	private static Map<String, Color> colorMap = new HashMap<String, Color>();
+	
+	static
+	{
+		colorMap.put("blue", new blueColor());
+		colorMap.put("black", new blackColor());
+	}
+	
+	public static Color getColor(String colorName)
+	{
+		return (Color) colorMap.get(colorName).clone();
+	}
+}
+
+
+// Driver class
+class Prototype
+{
+	public static void main (String[] args)
+	{
+		ColorStore.getColor("blue").addColor();
+		ColorStore.getColor("black").addColor();
+		ColorStore.getColor("black").addColor();
+		ColorStore.getColor("blue").addColor();
+	}
+}
+
+
+
+
+
+
+
+When to use?
+When a system should be independent of how its products are created, composed, and represented
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+First lets know about Cloneable  Java.lang.Cloneable interface is a marker interface.
+
+There is a method clone() in the Object class. Cloneable interface is implemented by a class to make Object.clone() method valid
+
+If you will try to Clone an object which doesn’t implement the Cloneable interface, it will throw CloneNotSupportedException, which you may want to handle.
+
+clone() performs a field by field copy of parameters from 1 object to another
+
+
+
+
+class A implements Cloneable {
+    int i;
+    String s;
+
+    public A(int i, String s)
+    {
+        this.i = i;
+        this.s = s;
+    }}
+
+@Override
+    protected Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
+
+public class Test {
+    public static void main(String[] args) throws CloneNotSupportedException
+    {
+        A a = new A(20, "GeeksForGeeks");
+        A b = (A)a.clone();
+  
+        System.out.println(b.i);
+        System.out.println(b.s);
+   }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+					STRUCTURAL
+
+To provide relationship between objects.
+
+It is about organising different classes and objects to form a larger structure
+
+Use case of design pattern is when 2 interfaces are not compatible with each other ans want to establish a relationship .
+
+
+Adapter
+
+In real world we need adapters when we need to connect 2 devices who are not compatible with each other but want to communicate.
+
+Similarly in OOPs adapters are used when we have a class (client ) that does not want to create it’s own object and expects some other type of object 
+That provides the same functionality.
+
+To use an adapter:
+1.The client (Main ) makes a request to the adapter (BirdAdapter) by calling a method(quack() ) on it using the target interface(ToyDuck).
+2.The adapter translates that request on the adaptee (makeSound() ) using the adaptee interface(Sparrow).
+3.Client receive the results of the call and is unaware of adapter’s presence.
+
+Public interface Bird
+{
+		void fly();
+		void makeSound();
+}
+
+Public class Sparrow implements Bird
+{
+		void fly()
+		{
+			SOUT(“Flying”);
+		}
+		void makeSound()
+		{
+			SOUT(“Chirp chirp”);
+		}
+}
+Public interface ToyDuck
+{
+		void quack();
+}
+
+Public class PlasticToyDuck
+{
+		void quack()
+		{
+			SOUT(“quack quack”);
+		}
+}
+
+//Adapter class must implement Target Class and contain the reference of adapter class Bird/Sparrow
+Public class BirdAdapter implements ToyDuck
+{
+		Bird bird;
+		BirdAdapter(Bird bird)
+		{
+			this.bird=bird;	
+		}
+		void quack()
+		{
+			bird.makeSound();
+		}
+}
+				
+Public class Main
+{
+	psvm()
+	{
+		ToyDuck t = new PlasticToyDuck();
+		Bird sp = new Sparrow();
+		sp.makeSound();        // Chirp chirp
+		t.quack();		//quack quack
+		ToyDuck birdAdapt = new BirdAdapt(sp);   //Here without creating object of ToyDuck we are implementing a similar functionality makeSound 								//that is internally called in quack()
+		 
+
+		birdAdapt.quack();	// Chirp chirp
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Advantages
+
+Helps achieve reusability and flexibility.
+
+
+
+
+
+Bridge Pattern
+
+The Bridge design pattern allows you to separate the abstraction(Vehicle )  from the implementation (workshop ).
+
+The bridge pattern allows the Abstraction and the Implementation to be developed independently and the client code can access only the Abstraction part without being concerned about the Implementation part.
+
+Suppose we need to assemble and produce vehicles like bus and bike
+
+Without Bridge Pattern
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+With Bridge Pattern
+
+
+
+
+
+
+
+
+
+
+It would get even more ugly if we need to add new function in Bus, we will have to add to ProduceBus and AssembleBus as well
+
+Or suppose we want to add 1 more vehicle sub-class say car, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+It follows below syntax
+
+The bridge pattern allows the Abstraction and the Implementation to be developed independently and the client code can access only the Abstraction part without being concerned about the Implementation part.
+
+The abstraction is an interface or abstract class and the implementer is also an interface or abstract class.
+
+The abstraction contains a reference to the implementer. 
+
+Children of the abstraction are referred to as refined abstractions, 
+
+children of the implementer are concrete implementers. 
+
+Since we can change the reference to the implementer in the abstraction, we are able to change the abstraction’s implementer at run-time.
+
+
+Advantages
+It increases the loose coupling between class abstraction and it’s implementation.
+
+
+
+
+Public interface Workshop
+{
+	void manufacture();
+}
+
+Public class Assemble extends Workshop
+{
+	void manufacture()
+	{
+		SOUT(“ assembling”);
+	}
+		
+}
+
+Public class Produce extends Workshop
+{
+	void manufacture()
+	{
+		SOUT(“ producing”);
+	}
+
+}
+
+
+Public abstract class Vehicle
+{
+	Workshop w1;
+	Workshop w2;
+	Vehicle(Workshop w1, Workshop w2)
+	{
+		this.w1=w1;
+		this.w2=w2;
+	}
+	void introduce();
+}
+
+Public class Bus extends Vehicle
+{
+	Bus(Workshop w1, Workshop w2)
+	{
+		super(w1,w2);
+	}
+	void introduce()
+	{
+		SOUT(“Bus”);
+		w1.manufacture();
+		w2.manufacture();
+	}
+	
+}
+
+
+Public class Bike extends Vehicle
+{
+	Bus(Workshop w1, Workshop w2)
+	{
+		super(w1,w2);
+	}
+	void introduce()
+	{
+		SOUT(“Bike”);
+		w1.manufacture();
+		w2.manufacture();
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+Public class Main
+{
+	psvm()
+	{
+		Workshop w1 = new Assemble();
+		Workshop w2 = new Produce();
+		Vehicle v1 = new Bus(w1, w2);
+		Vehicle v1 = new Bus(w1, w2);	
+		v1.introduce();
+		v2.introduce();
+	}
+}
+
+
+					Behavioral
+To help define how objects interact.
+The interaction between objects should be such that they can easily talk to each other and still be loosely coupled.
+
+Command Pattern
+
+Suppose you are building a home automation system. There is a programmable remote which can be used to turn on and off various items in your home like lights, stereo, AC etc
+
+If we don’t use command pattern
+
+if (buttonPressed == button1)
+     lights.on()
+
+
+if (buttonPressed == button2)
+     lights.off()
+
+if (buttonPressed == button3)
+     stereo.on()
+
+if (buttonPressed == button1)
+     Stereo.off()
+
+if (buttonPressed == button1)
+     tv.on()
+Using command pattern we can do all this with just 1 button
+
+Public interface Command
+{
+	void execute()
+}
+Public class Light()
+{
+	public void on()
+	{
+		SOUT(“Light on”);
+	}
+	public void off()
+	{
+		SOUT(“Light off”);
+	}
+}
+Public class Stereo()
+{
+	public void on()
+	{
+		SOUT(“Stereo on”);
+	}
+	public void off()
+	{
+		SOUT(“Stereo off”);
+	}
+	public void setCD()
+	{}
+	public void setVolume()
+	{
+	}
+}
+Public class LightOnCommand implements Command
+{
+	Light light;
+	LightonCommand(Light light)
+	{
+		this.light = light;
+	}
+	void execute()
+	{
+		light.on();	
+	}
+}	
+
+Public class LightOffCommand implements Command
+{
+	Light light;
+	LightonCommand(Light light)
+	{
+		this.light = light;
+	}
+	void execute()
+	{
+		light.off();	
+	}
+}
+
+Public class seteroOnCommand implements Command
+{
+	Stereo stereo;
+	StereoonCommand(Stereo stereo)
+	{
+		this.stereo= stereo;
+	}
+	void execute()
+	{
+		stereo.on();	
+		stereo.setCD();
+		stereo.setVolume();
+	}
+	
+}
+
+
+
+
+
+Public class RemoteControl
+{
+	Command cmd;   //only 1 button
+	public void setCmd(Command cmd)
+	{
+		this.cmd=cmd;
+	}
+	public void pressButton()
+	{
+		cmd.execute();
+	}
+}
+
+Public class Main
+{
+	psvm()
+	{
+		RemoteControl r = new RemoteControl();
+		r.setCmd(new LightOnCommand(new Light()));
+		r.pressButton();
+		
+		r.setCmd(new StereoOnCommand(new Stereo()));
+		r.pressButton();
+	}
+}
+
+Chain of Responsibility Pattern
+
+In chain of responsibility, sender sends a request to a chain of objects. The request can be handled by any object in the chain.
+
+If one object cannot handle the request then it passes the same to the next receiver and so on.
+
+Chain of Responsibility Pattern says that just "avoid coupling the sender of a request to its receiver by giving multiple objects a chance to handle the request”.
+Advantage of Chain of Responsibility Pattern
+It reduces the coupling.
+It adds flexibility while assigning the responsibilities to objects.
+
+Where and When Chain of Responsibility pattern is applicable :   
+When you want to decouple a request’s sender and receiver
+Multiple objects, determined at runtime, are candidates to handle a request
+When you don’t want to specify handlers explicitly in your code
+
+Elements of this pattern
+
+Handler : This can be an interface which will primarily receive the request and dispatches the request to a chain of handlers. It has reference to the only first handler in the chain and does not know anything about the rest of the handlers.
+
+Concrete handlers : These are actual handlers that extends Handler class of the request chained in some sequential order.If ConcreteHandler1 can handle it, then the request is handled, if not it is sent to the handler ConcreteHandler2, the next one in the chain.
+
+Client : Originator of request and this will access the handler to handle it.
+
+
+public class Chain
+{
+Processor chain;
+
+public Chain(){
+	buildChain();
+}
+
+private void buildChain(){
+	chain = new NegativeProcessor(new ZeroProcessor(new PositiveProcessor(null)));
+}
+
+public void process(Number request) {
+	chain.process(request);
+}
+
+}
+
+abstract class Processor
+{
+	private Processor nextProcessor;
+
+	public Processor(Processor nextProcessor){
+		this.nextProcessor = nextProcessor;
+	};
+	
+	public void process(Number request){
+		if(nextProcessor != null)
+			nextProcessor.process(request);
+	};
+}
+
+class Number
+{
+	private int number;
+
+	public Number(int number)
+	{
+		this.number = number;
+	}
+
+	public int getNumber()
+	{
+		return number;
+	}
+
+}
+
+class NegativeProcessor extends Processor
+{
+	public NegativeProcessor(Processor nextProcessor){
+		super(nextProcessor);
+		
+	}
+
+	public void process(Number request)
+	{
+		if (request.getNumber() < 0)
+		{
+			System.out.println("NegativeProcessor : " + request.getNumber());
+		}
+		else
+		{
+			super.process(request);
+		}
+	}
+}
+
+class ZeroProcessor extends Processor
+{
+	public ZeroProcessor(Processor nextProcessor){
+		super(nextProcessor);
+	}
+
+	public void process(Number request)
+	{
+		if (request.getNumber() == 0)
+		{
+			System.out.println("ZeroProcessor : " + request.getNumber());
+		}
+		else
+		{
+			super.process(request);
+		}
+	}
+}
+
+class PositiveProcessor extends Processor
+{
+
+	public PositiveProcessor(Processor nextProcessor){
+		super(nextProcessor);
+	}
+
+	public void process(Number request)
+	{
+		if (request.getNumber() > 0)
+		{
+			System.out.println("PositiveProcessor : " + request.getNumber());
+		}
+		else
+		{
+			super.process(request);
+		}
+	}
+}
+
+class TestChain
+{
+	public static void main(String[] args) {
+		Chain chain = new Chain();
+		
+		//Calling chain of responsibility
+		chain.process(new Number(90));
+		chain.process(new Number(-50));
+		chain.process(new Number(0));
+		chain.process(new Number(91));
+	}
+}
