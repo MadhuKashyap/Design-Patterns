@@ -18,12 +18,17 @@ StudentRecord s1=new StudentRecord();  
 
 Here, we are creating the instance by using the new keyword. Sometimes, the nature of the object must be changed according to the nature of the program. In such cases, we must get the help of creational design patterns
 
-<H2> Factory Method Pattern </H2>
+ 							
+							
+							  Factory Method Pattern  
+							
 A Factory Pattern or Factory Method Pattern says that just define an interface or abstract class for creating an object but let the subclasses decide which class to instantiate.
-Advantages  1.Factory Method Pattern allows the sub-classes to choose the type of objects to create.
+Advantages  
+1.Factory Method Pattern allows the sub-classes to choose the type of objects to create.
 2. It promotes the loose-coupling. That means we don’t need to be dependant solely on the interface or abstract class we can choose one of the implementing classes
-Consider we want to implement a notification service through email, SMS, and push notification.
 
+
+Consider we want to implement a notification service through email, SMS, and push notification.
 
 In the above class diagram we have an interface called Notification, and three concrete classes are implementing Notification interface. A factory class NotificationFactory is created to get a Notification object.
 
@@ -91,7 +96,7 @@ public class NotificationService {
     }
 }
 
-				Abstract Factory Patterns
+						  Abstract Factory Patterns  
 
 Abstract Factory Pattern says that just define an interface or abstract class for creating families of related (or dependent) objects but without specifying their concrete sub-classes.
 
@@ -249,7 +254,7 @@ This pattern is particularly useful when the client doesn’t know exactly what 
 
 
 
-			Singleton Design Pattern
+						  Singleton Design Pattern  
 
 
 Sometimes we need to have only one instance of our class for example a single DB connection shared by multiple objects as creating a separate DB connection for every object may be costly.
@@ -259,12 +264,12 @@ The singleton pattern is a design pattern that restricts the instantiation of a 
 
 To create the singleton class, we need to have static member of class, private constructor and static factory method.
 
-				Prototype Design Pattern
+						  Prototype Design Pattern  
 
 Prototype patterns are required, when object creation is time consuming, and costly operation, so we create objects with the existing object itself. One of the best available ways to create an object from existing objects is the clone() method.
 
 Prototype Design Participants
-1) Prototype : This is the prototype of an actual object. 
+1) Prototype : This is the prototype of an actual object.
 2) Prototype registry : This is used as a registry service to have all prototypes accessible using simple string parameters.
 3) Client : Client will be responsible for using registry service to access prototype instances.
 
@@ -360,7 +365,7 @@ When a system should be independent of how its products are created, composed, a
 
 
 
-				Cloneable  
+				Cloneable
 Java.lang.Cloneable interface is a marker interface.
 
 There is a method clone() in the Object class. Cloneable interface is implemented by a class to make Object.clone() method valid
@@ -402,7 +407,7 @@ public class Test {
 
 
 
-					STRUCTURAL DESIGN PATTERN
+						STRUCTURAL DESIGN PATTERN
 
 To provide relationship between objects.
 
@@ -411,7 +416,7 @@ It is about organising different classes and objects to form a larger structure
 Use case of design pattern is when 2 interfaces are not compatible with each other ans want to establish a relationship .
 
 
-				Adapter Design Pattern
+						  Adapter Design Pattern  
 
 In real world we need adapters when we need to connect 2 devices who are not compatible with each other but want to communicate.
 
@@ -489,7 +494,7 @@ Helps achieve reusability and flexibility.
 
 
 
-					Bridge Pattern
+							  Bridge Pattern  
 
 The Bridge design pattern allows you to separate the abstraction(Vehicle )  from the implementation (workshop ).
 
@@ -502,8 +507,6 @@ Suppose we need to assemble and produce vehicles like bus and bike
 Without bridge pattern, It would get even more ugly if we need to add new function in Bus, we will have to add to ProduceBus and AssembleBus as well
 
 Or suppose we want to add 1 more vehicle sub-class say car, 
-
-
 
 
 
@@ -525,8 +528,6 @@ Since we can change the reference to the implementer in the abstraction, we are 
 
 Advantages
 It increases the loose coupling between class abstraction and it’s implementation.
-
-
 
 
 Public interface Workshop
@@ -611,11 +612,11 @@ Public class Main
 }
 
 
-					BEHAVIOURAL DESIGN PATTERN
+							BEHAVIOURAL DESIGN PATTERN
 To help define how objects interact.
 The interaction between objects should be such that they can easily talk to each other and still be loosely coupled.
 
-				     Command Pattern
+				     			  Command Pattern  
 
 Suppose you are building a home automation system. There is a programmable remote which can be used to turn on and off various items in your home like lights, stereo, AC etc
 
@@ -740,7 +741,7 @@ Public class Main
 	}
 }
 
-			Chain of Responsibility Pattern
+						  Chain of Responsibility Pattern  
 
 In chain of responsibility, sender sends a request to a chain of objects. The request can be handled by any object in the chain.
 
