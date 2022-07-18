@@ -9,14 +9,16 @@ Creational Patterns for the creation of objects; Structural Patterns to provide 
 The idea is to speed up the development process by providing well-tested, proven development/design paradigms.
 By using design patterns, you can make your code more flexible, reusable, and maintainable.
 
-					CREATIONAL
+
+
+							CREATIONAL DESIGN PATTERN
 These design patterns are all about class instantiation or object creation.These design patterns are used when a decision must be made at the time of instantiation of a class
 
 StudentRecord s1=new StudentRecord();  
 
 Here, we are creating the instance by using the new keyword. Sometimes, the nature of the object must be changed according to the nature of the program. In such cases, we must get the help of creational design patterns
 
-Factory Method Pattern
+<H2> Factory Method Pattern </H2>
 A Factory Pattern or Factory Method Pattern says that just define an interface or abstract class for creating an object but let the subclasses decide which class to instantiate.
 Advantages  1.Factory Method Pattern allows the sub-classes to choose the type of objects to create.
 2. It promotes the loose-coupling. That means we don’t need to be dependant solely on the interface or abstract class we can choose one of the implementing classes
@@ -400,7 +402,7 @@ public class Test {
 
 
 
-					STRUCTURAL
+					STRUCTURAL DESIGN PATTERN
 
 To provide relationship between objects.
 
@@ -609,7 +611,7 @@ Public class Main
 }
 
 
-					Behavioral
+					BEHAVIOURAL DESIGN PATTERN
 To help define how objects interact.
 The interaction between objects should be such that they can easily talk to each other and still be loosely coupled.
 
